@@ -53,42 +53,32 @@ Notes:
 
 ### Starting the program
 
-```bash
-$ lein repl
-"REPL started; server listening on localhost:25948."
-lottery.client=> 
-```
+      $ lein repl
+      "REPL started; server listening on localhost:25948."
+      lottery.client=> 
 
 ### The "buy" command
 
-```clojure
-lottery.client=> (buy "John")
-John, thank you for buying a ticket. Your ticket number is 37.
-```
+      lottery.client=> (buy "John")
+      John, thank you for buying a ticket. Your ticket number is 37.
 
 ### The "draw" command
 
-```clojure
-lottery.client=> (draw)
-Draw performed.
-```
+      lottery.client=> (draw)
+      Draw performed.
 
 ### The "winners" command
 
-```clojure
-lottery.client=> (winners)
-|-------------------|-------------------|-------------------|
-|Ticket #25         |Ticket #1          |Ticket #41         |
-|-------------------|-------------------|-------------------|
-|Not purchased : $79|Not purchased : $16|Not purchased : $11|
-|-------------------|-------------------|-------------------|
-```
+      lottery.client=> (winners)
+      |-------------------|-------------------|-------------------|
+      |Ticket #25         |Ticket #1          |Ticket #41         |
+      |-------------------|-------------------|-------------------|
+      |Not purchased : $79|Not purchased : $16|Not purchased : $11|
+      |-------------------|-------------------|-------------------|
 
 ## Installation
 
-```bash
-$ lein deps
-```
+      $ lein deps
 
 ## License
 

@@ -34,13 +34,11 @@ Functional requirements:
 
 - I want to be able to display the winning tickets as follows:
 
-```bash
-  |-------------------|-------------------|-------------------|
-  |1st prize ticket   |2nd prize ticket   |3rd prize ticket   |
-  |-------------------|-------------------|-------------------|
-  |Winner name : $75  |Winner name : $15  |Winner name : $10  |
-  |-------------------|-------------------|-------------------|
-```
+    |-------------------|-------------------|-------------------|
+    |1st prize ticket   |2nd prize ticket   |3rd prize ticket   |
+    |-------------------|-------------------|-------------------|
+    |Winner name : $75  |Winner name : $15  |Winner name : $10  |
+    |-------------------|-------------------|-------------------|
 
 Notes:
 

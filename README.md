@@ -34,11 +34,13 @@ Functional requirements:
 
 - I want to be able to display the winning tickets as follows:
 
+```bash
   |-------------------|-------------------|-------------------|
   |1st prize ticket   |2nd prize ticket   |3rd prize ticket   |
   |-------------------|-------------------|-------------------|
   |Winner name : $75  |Winner name : $15  |Winner name : $10  |
   |-------------------|-------------------|-------------------|
+```
 
 Notes:
 
@@ -53,43 +55,42 @@ Notes:
 
 ### Starting the program
 
-At the shell type:
-
+```bash
 $ lein repl
-
-The lottery client prompt should show up:
-
 "REPL started; server listening on localhost:25948."
 lottery.client=> 
+```
 
 ### The "buy" command
 
-At the repl prompt type:
-
+```clojure
 lottery.client=> (buy "John")
 John, thank you for buying a ticket. Your ticket number is 37.
+```
 
 ### The "draw" command
 
-At the repl prompt type:
-
+```clojure
 lottery.client=> (draw)
 Draw performed.
+```
 
 ### The "winners" command
 
-At the repl prompt type:
-
+```clojure
 lottery.client=> (winners)
 |-------------------|-------------------|-------------------|
 |Ticket #25         |Ticket #1          |Ticket #41         |
 |-------------------|-------------------|-------------------|
 |Not purchased : $79|Not purchased : $16|Not purchased : $11|
 |-------------------|-------------------|-------------------|
+```
 
 ## Installation
 
+```bash
 $ lein deps
+```
 
 ## License
 

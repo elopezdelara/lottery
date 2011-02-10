@@ -1,53 +1,39 @@
 # lottery
 
-Solution to the lottery problem described below.
+Solution to the Pyxis Lottery test in Clojure.
 
-Non-functional requirements:
+Problem description (in French):
 
-- The lottery should have 50 tickets (numbered 1 to 50)
-- The lot for the prizes should be 50% of the amount in the bank
-- The prizes should be calculated as follows:
+Une fois par mois a lieu la loterie Pyxis.  Lors de chaque tirage, François sort son vieux boulier contenant 50 boules numérotées de 1 à 50.  Après avoir bien mélangé le boulier, il sort au hasard trois boules gagnantes pour des prix correspondant respectivement à 75%, 15% et 10% du total des prix disponibles.  Ce total des prix disponibles correspond quant à lui à 50% du montant total contenu dans la caisse de la loterie au moment du tirage.
 
-   1st prize = 75% of the lot
-   2nd prize = 15% of the lot
-   3rd prize = 10% of the lot
+Pour vous donner un exemple, la caisse comprend actuellement 200$.  S'il y avait un tirage maintenant, les prix seraient donc répartis comme suit:
 
-   For example, if there was a draw in this moment, and the
-   amount in the bank was of $200, the prizes would be distributed
-   as follows:
+-  75$ pour la première boule :
 
-   $75 for the 1st prize
-   $15 for the 2nd prize
-   $10 for the 3rd prize
+-  15$ pour la deuxième boule :
 
-- The price of an individual ticket should be $10
-- Three tickets should be drawn randomly and awarded the prizes
-  described above
+-  10$ pour la troisième boule : 
 
-Functional requirements:
+Pour participer au prochain tirage on peut se procurer un ticket en tout temps au coût de 10$.  A chaque tirage on utilise une nouvelle liasse de 50 tickets numérotés de la même manière que les boules.
 
-- I want to be able to buy a ticket for a draw by providing a name. When
-  buying a ticket, the number of the ticket should be displayed on the 
-  screen.
+François désire passer à l'ère moderne et vous demande de faire un programme pour remplacer son vieux boulier et ses tickets. Il vous liste ce que doit permettre le programme:
 
-- I want to be able to perform a draw
+-  Je veux pouvoir acheter un ticket pour le tirage en fournissant un prénom.  Lors de l'achat, le numéro de la boule est affiché à l'écran.
 
-- I want to be able to display the winning tickets as follows:
+-  Je veux pouvoir déclencher un tirage
 
-      |-------------------|-------------------|-------------------|
-      |1st prize ticket   |2nd prize ticket   |3rd prize ticket   |
-      |-------------------|-------------------|-------------------|
-      |Winner name : $75  |Winner name : $15  |Winner name : $10  |
-      |-------------------|-------------------|-------------------|
+-  Je veux pouvoir afficher les tickets gagnants comme ceci:
 
-Notes:
+1ère boule	 2ème boule	 3ème boule
+André : 75$	 Sylvie : 15$	 Dominic : 10$
 
-- The command line is good enough as interface for the user
-- The functionality described above should be called by the "buy",
-  "draw" and "winners" commands respectively.
-- When starting the program, the amount in the bank can be initialized
-  to $200
-- Amounts can be rounded or truncated
+François se satisfera d'un programme à la console.  Il demande toutefois que les trois fonctionnalités mentionné plus haut puissent être lancées avec les commandes "achat", "tirage" et "gagnants".
+
+Lors du lancement du programme, vous pouvez initialiser l'encaisse à 200$.
+
+Le programme n'a pas à persister d'information sur disque ou en base de données.
+
+Vous pouvez arrondir ou tronquer les montants au dollars près.
 
 ## Usage
 
@@ -55,33 +41,23 @@ Notes:
 
       $ lein repl
       "REPL started; server listening on localhost:25948."
-      lottery.client=> 
+      lottery.core=> 
 
-### The "buy" command
+### The "buy-ticket" command
 
-      lottery.client=> (buy "John")
-      John, thank you for buying a ticket. Your ticket number is 37.
+      lottery.core=> (buy-ticket "John")
+      24
 
-### The "draw" command
+### The "draw-winners" command
 
-      lottery.client=> (draw)
-      Draw performed.
-
-### The "winners" command
-
-      lottery.client=> (winners)
-      |-------------------|-------------------|-------------------|
-      |Ticket #25         |Ticket #1          |Ticket #41         |
-      |-------------------|-------------------|-------------------|
-      |Not purchased : $79|Not purchased : $16|Not purchased : $11|
-      |-------------------|-------------------|-------------------|
-
+      lottery.core=> (draw-winners)
+      {1 {:ticket [15 "Frank"], :amount 105.0}, 2 {:ticket [24 "John"], :amount 21.0}, 3 {:ticket [43 "Mike"], :amount 14.0}}
 ## Installation
 
       $ lein deps
 
 ## License
 
-Copyright (C) 2010 Enrique Lopez de Lara
+Copyright (C) 2011 Enrique Lopez de Lara
 
 Distributed under the Eclipse Public License, the same as Clojure.

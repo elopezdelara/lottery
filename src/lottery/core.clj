@@ -1,52 +1,35 @@
-(ns lottery.core
-  (:use [clojure.set]))
+(ns lottery.core)
 
-(defrecord ticket [number buyer])
+(def *lottery* (atom {:tickets      (zipmap (range 1 51) (repeat nil))
+		      :prizes       [0.375 0.075 0.05] ;; 1st = 0.5*0.75, 2nd = 0.5*0.15, 3rd = 0.5*0.1
+		      :register     200
+		      :ticket-price 10}))
 
-(defn jackpot
-  "Return the amount of the jackpot based on the amount in the bank."
-  [bank]
-  (* bank 0.5))
+(defn shuffle-tickets
+  "Shuffle the tickets"
+  []
+  (shuffle (vec (:tickets @*lottery*))))
 
-(defn create-tickets
-  "Create a list of tickets starting from 1 to the number specified."
-  [size]
-  (vec (map #(ticket. % nil) (range 1 (inc size)))))
-
-(defn available-tickets
-  "Return a list of the available tickets (not yet purchased)"
-  [tickets]
-  (vec (filter #(nil? (:buyer %)) @tickets)))
+(defn pick-ticket
+  "Pick a random ticket not yet purchased"
+  []
+  (first (filter (fn [[_ buyer]] (nil? buyer)) (shuffle-tickets))))  
 
 (defn buy-ticket
-  "Buy a ticket from the ticket list and update the bank amount"
-  [bank tickets number buyer price]
-  (let [idx (dec number)]
-    (dosync (alter tickets assoc idx (assoc (tickets idx) :buyer buyer))
-	    (alter bank + price))
-    (@tickets idx)))
+  "Buy a ticket for the specified buyer name"
+  [buyer]
+  (when-let [[ticket-number _] (pick-ticket)]
+    (dosync 
+     (swap! *lottery* update-in [:register] + (:ticket-price @*lottery*))
+     (swap! *lottery* update-in [:tickets] assoc ticket-number buyer))
+    ticket-number))
 
-(defn buy-random-ticket
-  "Buy a random ticket from the ticket list and update the bank amount"
-  [bank tickets buyer price]
-  (dosync
-   (let [ticket-number (:number (first (shuffle (available-tickets tickets))))]
-     (if (nil? ticket-number)
-       nil       
-       (buy-ticket bank tickets ticket-number buyer price)))))
+(defn draw-winners
+  "Draw the winners and calculate the prizes"
+  []
+  (apply hash-map
+	 (mapcat (fn [number ticket prize]
+		   (list number {:ticket ticket
+				 :amount (* (:register @*lottery*) prize)}))
+		 (iterate inc 1) (shuffle-tickets) (:prizes @*lottery*))))
 
-(defn draw-tickets
-  "Randomly draw the specified number of tickets from the ticket list (also
-   removes them from the list)"
-  [tickets size]
-  (dosync
-   (let [drawn-tickets (take size (shuffle @tickets))]
-     (ref-set tickets (vec (difference (set @tickets) (set drawn-tickets))))
-     (vec drawn-tickets))))
-
-(defn get-winners
-  "Draw tickets and assign the corresponding prizes"
-  [tickets jackpot prizes]
-  (let [drawn-tickets (draw-tickets tickets (count prizes))]
-    (into [] (map (fn [t p] (hash-map :ticket t :amount (p jackpot)))
-		  drawn-tickets prizes))))
